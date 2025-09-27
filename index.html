@@ -8,25 +8,35 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Google Fonts: Inter for body and Great Vibes -->
+    <!-- Google Fonts: Inter for body and Great Vibes for script -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* Custom styles to apply the color palette and animations */
+        /*
+          Color Palette:
+          - Deep Maroon: #471123
+          - Vibrant Pink: #d13063
+          - Lighter Maroon: #6a1a36
+          - Dark Text: #1a0a0f
+          - White: #FFFFFF
+        */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #471123;
-            background-image: linear-gradient(135deg, #471123 0%, #6a1a36 100%);
-            color: #FFFFFF;
-            overflow-x: hidden; /* Prevents horizontal scrollbars */
+            background-color: #fdfcff; /* A very light, almost white background */
+            color: #1a0a0f; 
             position: relative;
+            min-height: 100vh;
         }
 
-        /* Starry background effect container */
-        .stars {
-            position: absolute;
+        body.no-scroll {
+            overflow: hidden;
+        }
+
+        /* Container for the blurred background shapes */
+        .background-shapes {
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -34,149 +44,289 @@
             z-index: 0;
             overflow: hidden;
         }
-        .star {
+
+        .blur-shape {
             position: absolute;
-            background: white;
-            border-radius: 50%;
-            animation: twinkle linear infinite;
+            background-size: contain;
+            background-repeat: no-repeat;
+            filter: blur(100px); /* The blur effect */
+            opacity: 0.5; /* Make them subtle */
         }
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 1; transform: scale(1); }
+        
+        /* Container for the sharp foreground shapes */
+        .foreground-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0; /* Sits below content but above main BG */
+            overflow: hidden;
         }
 
-        /* Custom font class for the main "Coming Soon" heading */
+        .foreground-shape {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0; /* Hidden for animation */
+        }
+
+        /* Individual shapes with unique positions, sizes, and animations */
+        .blur-shape-1 {
+            background-image: url('img/shapes/u1\ \(1\).png');
+            width: 30vmax;
+            height: 30vmax;
+            top: 30vh;
+            left: -10vw;
+            opacity: 0.3;
+            animation: gentle-float 50s linear infinite alternate;
+        }
+        .blur-shape-2 {
+            background-image: url('img/shapes/u1\ \(2\).png');
+            width: 35vmax;
+            height: 35vmax;
+            bottom: 20vh;
+            right: -15vw;
+            opacity: 0.4;
+            animation: gentle-float 45s linear infinite alternate-reverse;
+        }
+
+        .foreground-shape-1 {
+            background-image: url('img/shapes/u1\ \(2\).png');
+            width: 50vmax;
+            height: 50vmax;
+            top: -15vmax;
+            right: -20vmax;
+            animation: slideInTop 1.2s ease-out 0.2s forwards;
+        }
+
+        .foreground-shape-2 {
+            background-image: url('img/shapes/u1\ \(4\).png');
+            width: 45vmax;
+            height: 45vmax;
+            bottom: -15vmax;
+            left: -15vmax;
+            animation: slideInBottom 1.2s ease-out 0.2s forwards;
+        }
+
+        /* Keyframes for animations */
+        @keyframes gentle-float {
+            from { transform: translateY(0px) rotate(0deg) scale(1); }
+            to { transform: translateY(20px) rotate(15deg) scale(1.05); }
+        }
+        @keyframes slideInTop { from { opacity: 0; transform: translateY(-50%) translateX(50%); } to { opacity: 1; transform: translateY(0) translateX(0); } }
+        @keyframes slideInBottom { from { opacity: 0; transform: translateY(50%) translateX(-50%); } to { opacity: 1; transform: translateY(0) translateX(0); } }
+
+        /* Page container styles */
+        .page {
+            display: none;
+            flex-direction: column;
+            width: 100%;
+            position: relative;
+            z-index: 1; /* Ensures content is above all shapes */
+        }
+
+        #home-page {
+            height: 100vh; /* Make the home page exactly the viewport height */
+            height: 100dvh; /* Dynamic viewport height for mobile */
+        }
+        
+        #brochure-page {
+            min-height: 100vh;
+        }
+
+        .page.active {
+            display: flex;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        /* Main "Coming Soon" heading */
         .font-script {
             font-family: 'Great Vibes', cursive;
-            font-size: clamp(4rem, 15vw, 9rem); /* Responsive font size */
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.5);
+            font-size: clamp(3.5rem, 13vw, 7rem);
+            color: #d13063;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.1);
         }
 
-        /* Animation keyframes */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        .lead {
+            font-weight: 500;
+            color: #333;
         }
         
-        /* Applying animations with delays */
+        /* Content animation keyframes */
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .animated { opacity: 0; }
         .animate-fade-in-down { animation: fadeInDown 1s ease-out forwards; }
         .animate-fade-in-up { animation: fadeInUp 1s ease-out forwards; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-400 { animation-delay: 0.4s; }
-        .delay-600 { animation-delay: 0.6s; }
-        .delay-800 { animation-delay: 0.8s; }
-        .delay-1000 { animation-delay: 1.0s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-700 { animation-delay: 0.7s; }
+        .delay-900 { animation-delay: 0.9s; }
+        .delay-1100 { animation-delay: 1.1s; }
 
-        /* Ensuring initial state is invisible for animation */
-        .animated { opacity: 0; }
+        .social-icon svg { width: 28px; height: 28px; fill: #471123; transition: all 0.3s ease-in-out; }
+        .social-icon:hover svg { fill: #d13063; transform: scale(1.2) rotate(5deg); }
         
-        /* Social Icon Styling */
-        .social-icon svg {
-            width: 28px;
-            height: 28px;
-            fill: #FFFFFF;
-            transition: all 0.3s ease-in-out;
+        .header-logo { width: 100px; }
+        @media (min-width: 768px) { .header-logo { width: 140px; } }
+
+        /* Mascot styling */
+        .mascot-head {
+            width: clamp(90px, 18vw, 150px);
+            height: auto;
+            margin-left: -1rem; /* Overlap slightly with text on larger screens */
+            margin-bottom: 1rem;
         }
-        .social-icon:hover svg {
-            fill: #F59FB4;
-            transform: scale(1.2) rotate(5deg);
+
+        /* Custom Button Styles */
+        .btn-maroon {
+            background-color: #471123;
+            border-color: #471123;
+            color: #fff;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        .btn-maroon:hover {
+            background-color: #6a1a36;
+            border-color: #6a1a36;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .btn-outline-maroon {
+            color: #471123;
+            border-color: #471123;
+            font-weight: 500;
+            border-radius: 50px;
+            padding: 0.5rem 1.25rem;
+            transition: all 0.3s ease;
+        }
+        .btn-outline-maroon:hover {
+            background-color: #471123;
+            color: #fff;
+            border-color: #471123;
         }
         
-        /* Main content needs to be above the stars */
-        main, footer {
-            position: relative;
-            z-index: 1;
+        /* Carousel Styling */
+        #brochureCarousel {
+            max-width: 450px;
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
-        
-        /* Custom class for the larger logo */
-        .logo-img {
-            width: 180px;
-            height: 180px;
+        .carousel-item img {
+            border-radius: 15px;
         }
-        @media (min-width: 768px) {
-            .logo-img {
-                width: 240px;
-                height: 240px;
-            }
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
         }
+
     </style>
 </head>
-<body class="d-flex flex-column align-items-center justify-content-center min-vh-100 p-4 text-center">
+<body class="no-scroll">
     
-    <!-- This div will contain the animated stars -->
-    <div class="stars"></div>
+    <div class="background-shapes">
+        <div class="blur-shape blur-shape-1"></div>
+        <div class="blur-shape blur-shape-2"></div>
+    </div>
 
-    <main class="w-100 d-flex flex-column align-items-center justify-content-center flex-grow-1" style="max-width: 896px;">
-        
-        <!-- School Logo -->
-        <img src="img/Logo stylized version vf.png"
-             alt="Patkai The Heritage Public School Logo"
-             class="logo-img mb-2 animated animate-fade-in-down"
-             onerror="this.onerror=null; this.src='https://placehold.co/240x240/ffffff/471123?text=Logo';">
-
-        <!-- Main Heading -->
-        <h1 class="font-script animated animate-fade-in-down delay-200">
-            Coming Soon
-        </h1>
-
-        <!-- Subtitle -->
-        <p class="lead text-light animated animate-fade-in-up delay-400 mt-3">
-            Our new website is under development. Stay tuned for something amazing!
-        </p>
-
-        <!-- Informative Text from Brochure -->
-        <p class="mt-4 text-white-50 animated animate-fade-in-up delay-600" style="max-width: 672px;">
-            Founded on a vision of excellence and holistic learning, Patkai - The Heritage Public School is preparing to launch a new digital experience. We are committed to "Shaping the Future, Honoring the Heritage" by nurturing young minds with precision and passion.
-        </p>
-
-        <!-- Social Media Links -->
-        <div class="d-flex justify-content-center mt-5 animated animate-fade-in-up delay-800">
-            <!-- Facebook -->
-            <a href="https://www.facebook.com/p/Patkai-The-Heritage-Public-School-100064126056746/" class="social-icon mx-3" aria-label="Facebook">
-                <svg viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06c0 5.06 3.67 9.25 8.44 10V14.87H7.7v-2.82h2.74v-2.1c0-2.72 1.62-4.22 4.08-4.22 1.16 0 2.35.22 2.35.22v2.53h-1.3c-1.33 0-1.75.83-1.75 1.68v2.01h2.8L16.2 14.87h-2.5v7.25c4.77-.75 8.44-4.94 8.44-10z"/></svg>
-            </a>
-            <!-- Instagram -->
-            <a href="#" class="social-icon mx-3" aria-label="Instagram">
-                <svg viewBox="0 0 24 24"><path d="M12 2c2.72 0 3.05.01 4.12.06 1.06.05 1.79.22 2.42.46.65.25 1.13.59 1.62 1.08.48.48.83.97 1.08 1.62.24.63.41 1.36.46 2.42.05 1.07.06 1.4.06 4.12s-.01 3.05-.06 4.12c-.05 1.06-.22 1.79-.46 2.42a4.9 4.9 0 01-1.08 1.62c-.48.48-.97.83-1.62 1.08-.63.24-1.36.41-2.42.46-1.07.05-1.4.06-4.12.06s-3.05-.01-4.12-.06c-1.06-.05-1.79-.22-2.42-.46a4.9 4.9 0 01-1.62-1.08c-.48-.48-.83-.97-1.08-1.62-.24-.63-.41-1.36-.46-2.42-.05-1.07-.06-1.4-.06-4.12s.01-3.05.06-4.12c.05-1.06.22-1.79.46-2.42.25-.65.59-1.13 1.08-1.62.48-.48.97-.83 1.62-1.08.63-.24 1.36.41 2.42-.46C8.95 2.01 9.28 2 12 2zm0 1.8c-2.67 0-3 .01-4.05.06-1.02.05-1.58.21-1.98.37-.47.18-.82.42-1.18.78-.37.36-.6.7-.78 1.18-.16.4-.32.96-.37 1.98-.05 1.05-.06 1.38-.06 4.05s.01 3 .06 4.05c.05 1.02.21 1.58.37 1.98.18.47.42.82.78 1.18.36.37.7.6 1.18.78.4.16.96.32 1.98.37 1.05.05 1.38.06 4.05.06s3-.01 4.05-.06c1.02-.05 1.58-.21 1.98-.37.47-.18.82-.42 1.18-.78.37-.36.6-.7.78-1.18.16-.4.32-.96.37-1.98.05-1.05.06-1.38.06-4.05s-.01-3-.06-4.05c-.05-1.02-.21-1.58-.37-1.98-.18-.47-.42-.82-.78-1.18-.36-.37-.7-.6-1.18-.78-.4-.16-.96-.32-1.98-.37C15 3.81 14.67 3.8 12 3.8zM12 9a3 3 0 100 6 3 3 0 000-6zm0 7.8a4.8 4.8 0 110-9.6 4.8 4.8 0 010 9.6zM17.25 5.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z"/></svg>
-            </a>
-            <!-- X (Twitter) -->
-            <a href="#" class="social-icon mx-3" aria-label="X">
-                <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
+    <!-- Page 1: Coming Soon -->
+    <div id="home-page" class="page active">
+        <div class="foreground-shapes">
+            <div class="foreground-shape foreground-shape-1"></div>
+            <div class="foreground-shape foreground-shape-2"></div>
         </div>
-    </main>
+        <header class="p-4 p-md-5 animated animate-fade-in-down delay-500">
+            <img src="img/Logo stylized version vf.png" alt="Patkai The Heritage Public School Logo" class="header-logo" onerror="this.onerror=null; this.src='https://placehold.co/160x160/ffffff/471123?text=Logo';">
+        </header>
+        <main class="container d-flex flex-column align-items-center justify-content-center flex-grow-1 text-center pb-5">
+            <div class="d-flex flex-wrap align-items-center justify-content-center">
+                <h1 class="font-script animated animate-fade-in-down delay-700">Coming Soon</h1>
+                <img src="img/excited lumo head raster t.png" alt="Mascot Head" class="mascot-head animated animate-fade-in-down delay-700">
+            </div>
+            <p class="lead animated animate-fade-in-up delay-900 mt-2">Our new website is under development. Stay tuned!</p>
+            <p class="mt-4 animated animate-fade-in-up delay-1100" style="max-width: 600px; color: #555;">
+                Founded on a vision of excellence and holistic learning, we are committed to "Shaping the Future, Honoring the Heritage."
+            </p>
+            <button id="viewBrochureBtn" class="btn btn-maroon mt-4 animated animate-fade-in-up delay-1100">View Our Brochure</button>
+            <div class="d-flex justify-content-center mt-5 animated animate-fade-in-up delay-1100">
+                <a href="https://www.facebook.com/p/Patkai-The-Heritage-Public-School-100064126056746/" class="social-icon mx-3" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06c0 5.06 3.67 9.25 8.44 10V14.87H7.7v-2.82h2.74v-2.1c0-2.72 1.62-4.22 4.08-4.22 1.16 0 2.35.22 2.35.22v2.53h-1.3c-1.33 0-1.75.83-1.75 1.68v2.01h2.8L16.2 14.87h-2.5v7.25c4.77-.75 8.44-4.94 8.44-10z"/></svg></a>
+                <a href="#" class="social-icon mx-3" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2c2.72 0 3.05.01 4.12.06 1.06.05 1.79.22 2.42.46.65.25 1.13.59 1.62 1.08.48.48.83.97 1.08 1.62.24.63.41 1.36.46 2.42.05 1.07.06 1.4.06 4.12s-.01 3.05-.06 4.12c-.05 1.06-.22 1.79-.46 2.42a4.9 4.9 0 01-1.08 1.62c-.48.48-.97.83-1.62 1.08-.63.24-1.36.41-2.42.46-1.07.05-1.4.06-4.12.06s-3.05-.01-4.12-.06c-1.06-.05-1.79-.22-2.42-.46a4.9 4.9 0 01-1.62-1.08c-.48-.48-.83-.97-1.08-1.62-.24-.63-.41-1.36-.46-2.42-.05-1.07-.06-1.4-.06-4.12s.01-3.05.06-4.12c.05-1.06.22-1.79.46-2.42.25-.65.59-1.13 1.08-1.62.48-.48.97-.83 1.62-1.08.63-.24 1.36.41 2.42-.46C8.95 2.01 9.28 2 12 2zm0 1.8c-2.67 0-3 .01-4.05.06-1.02.05-1.58.21-1.98.37-.47.18-.82.42-1.18.78-.37.36-.6.7-.78 1.18-.16.4-.32.96-.37 1.98-.05 1.05-.06 1.38-.06 4.05s.01 3 .06 4.05c.05 1.02.21 1.58.37 1.98.18.47.42.82.78 1.18.36.37.7.6 1.18.78.4.16.96.32 1.98.37 1.05.05 1.38.06 4.05.06s3-.01 4.05-.06c1.02-.05 1.58-.21 1.98-.37.47-.18.82-.42 1.18-.78.37-.36.6-.7.78-1.18.16-.4.32-.96-.37-1.98.05-1.05.06-1.38.06-4.05s-.01-3-.06-4.05c-.05-1.02-.21-1.58-.37-1.98-.18-.47-.42-.82-.78-1.18-.36-.37-.7-.6-1.18-.78-.4-.16-.96-.32-1.98-.37C15 3.81 14.67 3.8 12 3.8zM12 9a3 3 0 100 6 3 3 0 000-6zm0 7.8a4.8 4.8 0 110-9.6 4.8 4.8 0 010 9.6zM17.25 5.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5z"/></svg></a>
+                <a href="#" class="social-icon mx-3" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+            </div>
+        </main>
+        <footer class="w-100 py-4 text-center small animated animate-fade-in-up delay-1100">
+            <p class="mb-1" style="color: #666;">&copy; <span class="year"></span> Patkai The Heritage Public School. All Rights Reserved.</p>
+            <p style="color: #888;">Designed by <a href="#" class="fw-semibold text-decoration-none" style="color: #666;">Echelon Media</a></p>
+        </footer>
+    </div>
 
-    <!-- Footer -->
-    <footer class="w-100 py-5 mt-auto text-white-50 small animated animate-fade-in-up delay-1000">
-        <p>&copy; <span id="year"></span> Patkai The Heritage Public School. All Rights Reserved.</p>
-        <p class="mt-2 text-light">Designed by <a href="#" class="fw-semibold text-light text-decoration-none footer-link">Echelon Media</a></p>
-    </footer>
+    <!-- Page 2: Brochure Carousel -->
+    <div id="brochure-page" class="page">
+        <header class="p-4 p-md-5 d-flex justify-content-between align-items-center">
+            <img src="img/Logo stylized version vf.png" alt="Patkai The Heritage Public School Logo" class="header-logo" onerror="this.onerror=null; this.src='https://placehold.co/160x160/ffffff/471123?text=Logo';">
+            <button id="backBtn" class="btn btn-outline-maroon">← Back to Home</button>
+        </header>
+        <main class="container d-flex flex-column align-items-center justify-content-start flex-grow-1 text-center pt-3 pb-5">
+            <h2 class="font-script" style="color: #d13063;">Our Brochure</h2>
+            <p class="lead mb-4">Swipe or click to explore what we offer.</p>
+            <div id="brochureCarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active"><img src="img/Brochure/BROCHURE-01.png" class="d-block w-100" alt="Brochure Page 1"></div>
+                    <div class="carousel-item"><img src="img/Brochure/BROCHURE-02.png" class="d-block w-100" alt="Brochure Page 2"></div>
+                    <div class="carousel-item"><img src="img/Brochure/BROCHURE-03.png" class="d-block w-100" alt="Brochure Page 3"></div>
+                    <div class="carousel-item"><img src="img/Brochure/BROCHURE-04.png" class="d-block w-100" alt="Brochure Page 4"></div>
+                    <div class="carousel-item"><img src="img/Brochure/BROCHURE-05.png" class="d-block w-100" alt="Brochure Page 5"></div>
+                    <div class="carousel-item"><img src="img/Brochure/BROCHURE-06.png" class="d-block w-100" alt="Brochure Page 6"></div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#brochureCarousel" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#brochureCarousel" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Next</span>
+                </button>
+            </div>
+        </main>
+        <footer class="w-100 py-4 text-center small">
+            <p class="mb-1" style="color: #666;">&copy; <span class="year"></span> Patkai The Heritage Public School. All Rights Reserved.</p>
+            <p style="color: #888;">Designed by <a href="#" class="fw-semibold text-decoration-none" style="color: #666;">Echelon Media</a></p>
+        </footer>
+    </div>
 
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Set the current year in the footer
-        document.getElementById('year').textContent = new Date().getFullYear();
+        // Set the current year in all footer elements
+        document.querySelectorAll('.year').forEach(el => {
+            el.textContent = new Date().getFullYear();
+        });
 
-        // Starry background effect
-        const starsContainer = document.querySelector('.stars');
-        if (starsContainer) {
-            const numStars = 100;
-            for (let i = 0; i < numStars; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.top = `${Math.random() * 100}%`;
-                star.style.left = `${Math.random() * 100}%`;
-                const size = Math.random() * 2 + 1;
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.animationDuration = `${Math.random() * 3 + 2}s`;
-                star.style.animationDelay = `${Math.random() * 3}s`;
-                starsContainer.appendChild(star);
-            }
-        }
+        // Page switching logic
+        const body = document.body;
+        const homePage = document.getElementById('home-page');
+        const brochurePage = document.getElementById('brochure-page');
+        const viewBrochureBtn = document.getElementById('viewBrochureBtn');
+        const backBtn = document.getElementById('backBtn');
+
+        viewBrochureBtn.addEventListener('click', () => {
+            homePage.classList.remove('active');
+            brochurePage.classList.add('active');
+            body.classList.remove('no-scroll');
+            window.scrollTo(0, 0); // Scroll to top when showing brochure
+        });
+
+        backBtn.addEventListener('click', () => {
+            brochurePage.classList.remove('active');
+            homePage.classList.add('active');
+            body.classList.add('no-scroll');
+        });
     </script>
 </body>
 </html>
