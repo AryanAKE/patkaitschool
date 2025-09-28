@@ -100,14 +100,14 @@
         }
 
         .blur-shape-3 {
-            background-image: url('img/shapes/u1\ \(4\).png');
+            background-image: url('img/shapes/u1\ \(8\).png');
             width: 25vmax;
             height: 25vmax;
             bottom: 2vh;
             left: 5vw;
             opacity: 0.1;
             animation: slideInBottom 1.8s ease-out 0.2s forwards;
-            
+
         }
 
         .less-blur {
@@ -125,7 +125,7 @@
         }
 
         .foreground-shape-2 {
-            background-image: url('img/shapes/u1\ \(4\).png');
+            background-image: url('img/shapes/u1\ \(5\).png');
             width: 50vmax;
             height: 50vmax;
             bottom: -15vmax;
@@ -209,7 +209,7 @@
         .font-script {
             font-family: 'Great Vibes', cursive;
             font-size: clamp(3.5rem, 13vw, 7rem);
-            color: #d13063;
+            color: #471123;
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
         }
 
@@ -305,7 +305,7 @@
 
         /* School Name Styling */
         .school-name {
-            font-family: 'Helvetica', sans-serif;
+            font-family: 'coolvetica heavy compressed', sans-serif;
             line-height: 1.1;
             font-weight: 800;
             /* Extra bold */
@@ -333,9 +333,9 @@
 
         /* Mascot styling */
         .mascot-head {
-            width: clamp(90px, 18vw, 150px);
+            width: clamp(80px, 18vw, 140px);
             height: auto;
-            margin-left: -2rem;
+            margin-left: -1rem;
             /* Overlap slightly with text */
             margin-bottom: 0;
             transform: translateY(-25px) rotate(15deg);
@@ -345,6 +345,11 @@
         @media (max-width: 767px) {
             .mascot-head {
                 display: none;
+            }
+
+            .blur-shape-2 {
+                bottom: 5vh;
+                /* Moves the shape down on mobile */
             }
         }
 
@@ -610,4 +615,3 @@
 </body>
 
 </html>
-
