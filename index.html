@@ -52,9 +52,9 @@
             position: absolute;
             background-size: contain;
             background-repeat: no-repeat;
-            filter: blur(100px);
+            filter: blur(40px);
             /* The blur effect */
-            opacity: 0.5;
+            opacity: 0.6;
             /* Make them subtle */
         }
 
@@ -85,7 +85,7 @@
             height: 30vmax;
             top: 30vh;
             left: -10vw;
-            opacity: 0.3;
+            opacity: 0.9;
             animation: gentle-float 50s linear infinite alternate;
         }
 
@@ -95,7 +95,7 @@
             height: 35vmax;
             bottom: 20vh;
             right: -15vw;
-            opacity: 0.4;
+            opacity: 0.9;
             animation: gentle-float 45s linear infinite alternate-reverse;
         }
 
@@ -103,14 +103,16 @@
             background-image: url('img/shapes/u1\ \(4\).png');
             width: 25vmax;
             height: 25vmax;
-            bottom: 5vh;
-            left: 10vw;
-            animation: gentle-float 60s linear infinite alternate;
+            bottom: 2vh;
+            left: 5vw;
+            opacity: 0.1;
+            animation: slideInBottom 1.8s ease-out 0.2s forwards;
+            
         }
 
         .less-blur {
-            filter: blur(60px);
-            opacity: 0.35;
+            filter: blur(30px);
+            opacity: 0.5;
         }
 
         .foreground-shape-1 {
@@ -124,8 +126,8 @@
 
         .foreground-shape-2 {
             background-image: url('img/shapes/u1\ \(4\).png');
-            width: 45vmax;
-            height: 45vmax;
+            width: 50vmax;
+            height: 50vmax;
             bottom: -15vmax;
             left: -15vmax;
             animation: slideInBottom 1.2s ease-out 0.2s forwards;
@@ -133,10 +135,10 @@
 
         .foreground-shape-3 {
             background-image: url('img/shapes/u1\ \(1\).png');
-            width: 20vmax;
-            height: 20vmax;
-            bottom: 5vmax;
-            right: -5vmax;
+            width: 35vmax;
+            height: 35vmax;
+            bottom: -15vmax;
+            right: -15vmax;
             animation: slideInBottom 1.5s ease-out 0.5s forwards;
             opacity: 0.8;
         }
@@ -207,7 +209,7 @@
         .font-script {
             font-family: 'Great Vibes', cursive;
             font-size: clamp(3.5rem, 13vw, 7rem);
-            color: #ab053a;
+            color: #d13063;
             text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
         }
 
@@ -303,12 +305,14 @@
 
         /* School Name Styling */
         .school-name {
+            font-family: 'Helvetica', sans-serif;
             line-height: 1.1;
             font-weight: 800;
             /* Extra bold */
             color: #471123;
             text-transform: uppercase;
-            display: block; /* Visible on all screens */
+            display: block;
+            /* Visible on all screens */
         }
 
         .school-name .main-name {
@@ -419,7 +423,7 @@
 <body>
 
     <div class="background-shapes">
-        <div class="blur-shape blur-shape-1"></div>
+        <!-- <div class="blur-shape blur-shape-1"></div> -->
         <div class="blur-shape blur-shape-2"></div>
         <div class="blur-shape blur-shape-3 less-blur"></div>
     </div>
@@ -471,7 +475,7 @@
                     </svg></a>
                 <a href="#" class="social-icon mx-3" aria-label="X"><svg viewBox="0 0 24 24">
                         <path
-                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 1.52h1.833L7.084 4.126H5.117z" />
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                     </svg></a>
             </div>
         </main>
